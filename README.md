@@ -1,5 +1,9 @@
 # meal-prep
 
+Meal Prep is a simple SPA built to explore using Vue.js, Vuex, Vuetify and Firebase together. 
+
+Users can select select one of three meal plans which grab 9 recipes from [Edamam's](https://www.edamam.com/) recipe search API. Users can then add recipes to their profile provided they have signed into their account.
+
 ## Project setup
 ```
 npm install
