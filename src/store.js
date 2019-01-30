@@ -11,7 +11,8 @@ export default new Vuex.Store({
     user: null,
     isAuthenticated: false,
     recipes: [],
-    apiUrl: 'https://api.edamam.com/search'
+    apiUrl: 'https://api.edamam.com/search',
+    userRecipes: []
   },
   getters: {
     isAuthenticated(state) {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     },
     setRecipes(state, payload) {
       state.recipes = payload;
+    },
+    setUserRecipes(state, payload) {
+      state.userRecipes = payload;
     }
   },
   actions: {
@@ -45,6 +49,21 @@ export default new Vuex.Store({
       } catch (error) {
         commit('setRecipes', []);
       }
+    },
+    addRecipe({ state }, payload) {
+      firebase
+        .database()
+        .ref('users')
+        .child(state.user.user.uid)
+        .push(payload.recipe.label);
+    },
+    getUserRecipes({ state, commit }) {
+      return firebase
+        .database()
+        .ref('users/' + state.user.user.uid)
+        .once('value', snapshot => {
+          commit('setUserRecipes', snapshot.val());
+        });
     },
     userJoin({ commit }, { email, password }) {
       firebase
